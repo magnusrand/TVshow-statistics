@@ -26,8 +26,23 @@ export function numberOfEpisodes(json) {
     return data;
 }
 
-export function viewsForOneShow(json) {
-    // Needs to extract which show it's calculating for (this will be label),
-    // get an array with the dates it has aired (this will be labels) and
-    // get number of views for that airing day (this will be data)
+export function viewsForOneShow(json, name) {
+    let dataShow = json.filter(obj => obj.seriesId === name)
+        .reduce((res, obj) => {
+        if(!(obj.date in res))
+            res[obj.date] = parseInt(obj.views);
+        else {
+            res[obj.date] += parseInt((obj.views));
+        }
+        return res;
+    }, {});
+    dataShow["label"] = name;
+
+    return [dataShow];
+}
+
+export function viewsForAllShows(json) {
+    return [...new Set(json.map(obj => obj.seriesId))] // extracts show names
+        .filter(obj => obj !== "")
+        .map(name => viewsForOneShow(json, name)[0]); // generates data for show in question
 }

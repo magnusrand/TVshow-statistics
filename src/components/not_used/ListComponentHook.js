@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
-import convertToJSON from "../utils/csvConverter";
+import convertToJSON from "../../utils/csvConverter";
 
 export default function ListHook(props) {
     let listData = () => {
